@@ -3,6 +3,7 @@ const passInput = document.getElementById('passInput');
 const emailInput = document.getElementById('emailInput');
 const signupButton = document.getElementById('signupButton');
 const coverImg = document.getElementById('coverImg');
+const container = document.getElementById('container');
 
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
@@ -21,6 +22,10 @@ console.log(beta)
 //EVENTOS
 signupButton.addEventListener('click', signup);
 searchButton.addEventListener('click', search);
+
+
+//ACCIONES INICIALES
+getUsers();
 
 
 async function search(){
@@ -62,13 +67,46 @@ async function postUser(user){
     });
 
     console.log(response);
-
+    location.href = "index.html"; //Viajar a otra página
 }
 
 async function getUsers(){
     let response = await fetch(URL_BASE+"/user/list"); //HTTP Requ
     let users = await response.json();
-    console.log(users);
+
+    users.forEach( user => {
+        
+        let userContainer = document.createElement('div'); //<div></div>
+        let userTitle = document.createElement('h3'); //<h3></h3>
+        let userSubtitle = document.createElement('small'); //<small></small>
+        let userAction = document.createElement('button'); //<button></button>
+
+        userContainer.appendChild(userTitle); //<div><h3></h3></div>
+        userContainer.appendChild(userSubtitle); //<div><h3></h3><small></small></div>
+        userContainer.appendChild(userAction); //<div><h3></h3><small></small><button></button></div>
+
+        userTitle.innerHTML = user.name; //<h3>***</h3>
+        userSubtitle.innerHTML = user.email; //<small>***</small>
+        userAction.innerHTML = 'Eliminar'; //<button>Eliminar</button>
+
+        userAction.addEventListener('click', function(){
+            //alert("user to delete #" + user.id);
+            deleteUserById(user.id);
+        });
+
+
+        container.appendChild(userContainer);
+        
+    }); 
+}
+
+async function deleteUserById(id){
+    let response = await fetch(URL_BASE+'/user/delete/'+id, {
+        method: 'DELETE'
+    });
+    let message = await response.json();
+    console.log(message);
+    location.href = "index.html";
 }
 
 async function getPokemon(){
