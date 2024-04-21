@@ -3,6 +3,7 @@ const passInput = document.getElementById('passInput');
 const emailInput = document.getElementById('emailInput');
 const signupButton = document.getElementById('signupButton');
 const coverImg = document.getElementById('coverImg');
+const container = document.getElementById('container');
 
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
@@ -21,6 +22,10 @@ console.log(beta)
 //EVENTOS
 signupButton.addEventListener('click', signup);
 searchButton.addEventListener('click', search);
+
+//acciones iniciales 
+getUsers();
+
 
 
 async function search(){
@@ -68,7 +73,41 @@ async function postUser(user){
 async function getUsers(){
     let response = await fetch(URL_BASE+"/user/list"); //HTTP Requ
     let users = await response.json();
-    console.log(users);
+
+    users.forEach( user => {
+       
+       let userContainer =  document.createElement('div')
+        let userTitle = document.createElement('h3');
+        let userSubtittle = document.createElement('small');
+        let userAction = document.createElement('button');
+
+        userContainer.appendChild(userTitle);
+        userContainer.appendChild(userSubtittle);
+        userContainer.appendChild(userAction);
+
+        userTitle.innerHTML = user.name;
+        userSubtittle.innerHTML = user.email;
+        userAction.innerHTML = "Eliminar";
+
+        userAction.addEventListener('click', () => {
+            deleteUserById(user.id);
+        })
+
+    })
+    container.appendChild(userContainer);
+
+    //console.log(users);
+
+   // for(let i = 0; 1 < users.length; i++){
+     //   console.log( users[i])
+
+    //}
+    //console.log(users);
+
+}
+
+async function deleteUserById(id){
+
 }
 
 async function getPokemon(){
