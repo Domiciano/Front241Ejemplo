@@ -23,9 +23,9 @@ console.log(beta)
 signupButton.addEventListener('click', signup);
 searchButton.addEventListener('click', search);
 
-//acciones iniciales 
-getUsers();
 
+//ACCIONES INICIALES
+getUsers();
 
 
 async function search(){
@@ -67,7 +67,7 @@ async function postUser(user){
     });
 
     console.log(response);
-
+    location.href = "index.html"; //Viajar a otra página
 }
 
 async function getUsers(){
@@ -75,39 +75,38 @@ async function getUsers(){
     let users = await response.json();
 
     users.forEach( user => {
-       
-       let userContainer =  document.createElement('div')
-        let userTitle = document.createElement('h3');
-        let userSubtittle = document.createElement('small');
-        let userAction = document.createElement('button');
+        
+        let userContainer = document.createElement('div'); //<div></div>
+        let userTitle = document.createElement('h3'); //<h3></h3>
+        let userSubtitle = document.createElement('small'); //<small></small>
+        let userAction = document.createElement('button'); //<button></button>
 
-        userContainer.appendChild(userTitle);
-        userContainer.appendChild(userSubtittle);
-        userContainer.appendChild(userAction);
+        userContainer.appendChild(userTitle); //<div><h3></h3></div>
+        userContainer.appendChild(userSubtitle); //<div><h3></h3><small></small></div>
+        userContainer.appendChild(userAction); //<div><h3></h3><small></small><button></button></div>
 
-        userTitle.innerHTML = user.name;
-        userSubtittle.innerHTML = user.email;
-        userAction.innerHTML = "Eliminar";
+        userTitle.innerHTML = user.name; //<h3>***</h3>
+        userSubtitle.innerHTML = user.email; //<small>***</small>
+        userAction.innerHTML = 'Eliminar'; //<button>Eliminar</button>
 
-        userAction.addEventListener('click', () => {
+        userAction.addEventListener('click', function(){
+            //alert("user to delete #" + user.id);
             deleteUserById(user.id);
-        })
+        });
 
-    })
-    container.appendChild(userContainer);
 
-    //console.log(users);
-
-   // for(let i = 0; 1 < users.length; i++){
-     //   console.log( users[i])
-
-    //}
-    //console.log(users);
-
+        container.appendChild(userContainer);
+        
+    }); 
 }
 
 async function deleteUserById(id){
-
+    let response = await fetch(URL_BASE+'/user/delete/'+id, {
+        method: 'DELETE'
+    });
+    let message = await response.json();
+    console.log(message);
+    location.href = "index.html";
 }
 
 async function getPokemon(){
