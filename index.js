@@ -4,7 +4,6 @@ const emailInput = document.getElementById('emailInput');
 const signupButton = document.getElementById('signupButton');
 const coverImg = document.getElementById('coverImg');
 const container = document.getElementById('container');
-const container = document.getElementById('container');
 
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
